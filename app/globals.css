@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --psa-orange: #F26522;
+  --psa-orange-dark: #D84F0F;
+  --psa-orange-light: #FF8A4A;
+  --psa-blue: #1B3A6B;
+  --psa-blue-dark: #122847;
+  --psa-blue-light: #2C5490;
+  --psa-cream: #FAF7F2;
+  --psa-text: #1A1A1A;
+  --psa-muted: #6B7280;
+}
+
+html, body {
+  background: var(--psa-cream);
+  color: var(--psa-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll bar suave */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(27, 58, 107, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(27, 58, 107, 0.4);
+}
+
+/* Animação suave de fade-in */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Skeleton loader */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 0px, #f8f8f8 40px, #f0f0f0 80px);
+  background-size: 1000px;
+  animation: shimmer 1.5s infinite linear;
+}
