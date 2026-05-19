@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
 import {
   BarChart3,
   TrendingUp,
@@ -83,9 +82,6 @@ export default function DashboardPage() {
 }
 
 function Dashboard() {
-  const params = useSearchParams();
-  const accessKey = params.get("key") || "";
-
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -98,10 +94,9 @@ function Dashboard() {
       else setRefreshing(true);
       setError(null);
       try {
-        const res = await fetch(
-          `/api/deals?key=${encodeURIComponent(accessKey)}&periodo=${periodo}`,
-          { cache: "no-store" }
-        );
+        const res = await fetch(`/api/deals?periodo=${periodo}`, {
+          cache: "no-store",
+        });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
           throw new Error(err.error || `Erro ${res.status}`);
@@ -115,16 +110,12 @@ function Dashboard() {
         setRefreshing(false);
       }
     },
-    [accessKey, periodo]
+    [periodo]
   );
 
   useEffect(() => {
     fetchData(true);
   }, [fetchData]);
-
-  if (!accessKey) {
-    return <AcessoNegado />;
-  }
 
   if (loading) {
     return <LoadingState />;
@@ -571,20 +562,3 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
   );
 }
 
-function AcessoNegado() {
-  return (
-    <div className="min-h-screen bg-[var(--psa-cream)] flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 max-w-md text-center">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--psa-blue)] to-[var(--psa-blue-dark)] flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
-          P
-        </div>
-        <h2 className="text-lg font-bold text-[var(--psa-blue)] mb-2 font-['Plus_Jakarta_Sans']">
-          Acesso restrito
-        </h2>
-        <p className="text-sm text-[var(--psa-muted)]">
-          Este dashboard requer um link de acesso válido.
-        </p>
-      </div>
-    </div>
-  );
-}

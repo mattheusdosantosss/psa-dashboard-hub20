@@ -120,12 +120,6 @@ async function fetchPipelineStages(token: string): Promise<PipelineStage[]> {
 }
 
 export async function GET(req: NextRequest) {
-  // Proteção simples por token na URL
-  const accessKey = req.nextUrl.searchParams.get("key");
-  if (accessKey !== process.env.DASHBOARD_ACCESS_KEY) {
-    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
-  }
-
   const token = process.env.HUBSPOT_TOKEN;
   if (!token) {
     return NextResponse.json(
