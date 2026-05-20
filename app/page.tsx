@@ -177,7 +177,7 @@ function Dashboard() {
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 animate-fade-in">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-[var(--psa-muted)] uppercase tracking-wide">
+              <h3 className="text-sm font-semibold text-[var(--psa-text)] uppercase tracking-wide">
                 Taxa de conversão
               </h3>
               <BarChart3 className="w-5 h-5 text-[var(--psa-blue)]" />
@@ -196,20 +196,20 @@ function Dashboard() {
                 }}
               />
             </div>
-            <p className="text-xs text-[var(--psa-muted)] mt-3">
+            <p className="text-xs text-[var(--psa-text)] mt-3">
               Calculada sobre {data.resumo.ganhos.qtd + data.resumo.perdidos.qtd} negócios fechados
             </p>
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2 animate-fade-in">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-[var(--psa-muted)] uppercase tracking-wide">
+              <h3 className="text-sm font-semibold text-[var(--psa-text)] uppercase tracking-wide">
                 Funil — negócios por etapa
               </h3>
               <Users className="w-5 h-5 text-[var(--psa-blue)]" />
             </div>
             {data.funil.length === 0 ? (
-              <div className="py-12 text-center text-[var(--psa-muted)]">
+              <div className="py-12 text-center text-[var(--psa-text)]">
                 Sem dados no período selecionado.
               </div>
             ) : (
@@ -275,7 +275,7 @@ function Dashboard() {
               <td className="px-4 py-3 font-semibold text-[var(--psa-text)]">
                 {formatBRL(d.valor)}
               </td>
-              <td className="px-4 py-3 text-[var(--psa-muted)]">
+              <td className="px-4 py-3 text-[var(--psa-text)]">
                 {formatDate(d.dataCriacao)}
               </td>
             </>
@@ -298,7 +298,7 @@ function Dashboard() {
               <td className="px-4 py-3 font-semibold text-green-700">
                 {formatBRL(d.valor)}
               </td>
-              <td className="px-4 py-3 text-[var(--psa-muted)]">
+              <td className="px-4 py-3 text-[var(--psa-text)]">
                 {formatDate(d.dataFechamento)}
               </td>
             </>
@@ -319,7 +319,7 @@ function Dashboard() {
               <td className="px-4 py-3">
                 <PalestrantesCell palestrantes={d.palestrantes} />
               </td>
-              <td className="px-4 py-3 font-semibold text-[var(--psa-muted)]">
+              <td className="px-4 py-3 font-semibold text-[var(--psa-text)]">
                 {formatBRL(d.valor)}
               </td>
               <td className="px-4 py-3 text-sm">
@@ -328,10 +328,10 @@ function Dashboard() {
                     {d.motivoPerda}
                   </span>
                 ) : (
-                  <span className="text-[var(--psa-muted)]">—</span>
+                  <span className="text-[var(--psa-text)]">—</span>
                 )}
               </td>
-              <td className="px-4 py-3 text-[var(--psa-muted)]">
+              <td className="px-4 py-3 text-[var(--psa-text)]">
                 {formatDate(d.dataFechamento)}
               </td>
             </>
@@ -340,7 +340,7 @@ function Dashboard() {
           accent="red"
         />
 
-        <footer className="text-center text-xs text-[var(--psa-muted)] py-8">
+        <footer className="text-center text-xs text-[var(--psa-text)] py-8">
           PSA · Dashboard Hub20 · Dados em tempo real do HubSpot
         </footer>
       </main>
@@ -373,14 +373,14 @@ function Header({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="psa-logo text-4xl sm:text-5xl">PSA</h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-white mt-1">
             Dashboard Hub20 · atualizado às {horaAtualizacao}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--psa-muted)] pointer-events-none" />
+            <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--psa-text)] pointer-events-none" />
             <select
               value={periodo}
               onChange={(e) => setPeriodo(e.target.value)}
@@ -434,7 +434,7 @@ function StatCard({
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="flex items-start justify-between mb-3">
-        <span className="text-xs font-semibold text-[var(--psa-muted)] uppercase tracking-wide">
+        <span className="text-xs font-semibold text-[var(--psa-text)] uppercase tracking-wide">
           {label}
         </span>
         <span
@@ -447,7 +447,7 @@ function StatCard({
         {value}
       </div>
       {sub && (
-        <div className="text-sm font-medium text-[var(--psa-muted)] mt-1">
+        <div className="text-sm font-medium text-[var(--psa-text)] mt-1">
           {sub}
         </div>
       )}
@@ -484,13 +484,13 @@ function DealsTable({
         <h2 className="text-base font-bold text-[var(--psa-text)] font-['Plus_Jakarta_Sans'] flex items-center gap-2">
           <span className={accentColors[accent]}>{icon}</span>
           {title}
-          <span className="text-sm font-medium text-[var(--psa-muted)]">
+          <span className="text-sm font-medium text-[var(--psa-text)]">
             ({deals.length})
           </span>
         </h2>
       </div>
       {deals.length === 0 ? (
-        <div className="py-12 text-center text-[var(--psa-muted)] text-sm">
+        <div className="py-12 text-center text-[var(--psa-text)] text-sm">
           {empty}
         </div>
       ) : (
@@ -501,7 +501,7 @@ function DealsTable({
                 {columns.map((c) => (
                   <th
                     key={c}
-                    className="px-4 py-3 text-left text-xs font-semibold text-[var(--psa-muted)] uppercase tracking-wide"
+                    className="px-4 py-3 text-left text-xs font-semibold text-[var(--psa-text)] uppercase tracking-wide"
                   >
                     {c}
                   </th>
@@ -529,7 +529,7 @@ function LoadingState() {
         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--psa-orange)] to-[var(--psa-orange-dark)] flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 animate-pulse">
           P
         </div>
-        <p className="text-[var(--psa-muted)] text-sm">Carregando seus dados...</p>
+        <p className="text-[var(--psa-text)] text-sm">Carregando seus dados...</p>
       </div>
     </div>
   );
@@ -537,7 +537,7 @@ function LoadingState() {
 
 function PalestrantesCell({ palestrantes }: { palestrantes: string[] }) {
   if (palestrantes.length === 0) {
-    return <span className="text-[var(--psa-muted)]">—</span>;
+    return <span className="text-[var(--psa-text)]">—</span>;
   }
   return (
     <div className="flex flex-wrap gap-1.5">
@@ -561,7 +561,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
         <h2 className="text-lg font-bold text-[var(--psa-text)] mb-2 font-['Plus_Jakarta_Sans']">
           Erro ao carregar
         </h2>
-        <p className="text-sm text-[var(--psa-muted)] mb-6">{message}</p>
+        <p className="text-sm text-[var(--psa-text)] mb-6">{message}</p>
         <button
           onClick={onRetry}
           className="px-4 py-2 rounded-lg bg-[var(--psa-orange)] hover:bg-[var(--psa-orange-dark)] text-white font-medium text-sm transition-colors"
