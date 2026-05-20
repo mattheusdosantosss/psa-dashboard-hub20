@@ -372,7 +372,9 @@ function Header({
     <header className="bg-black border-b border-black sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="psa-logo text-4xl sm:text-5xl">PSA</h1>
+          <h1 className="psa-logo text-4xl sm:text-5xl">
+            PSA<span className="text-[var(--psa-orange)]">.</span>
+          </h1>
           <p className="text-xs text-white mt-1">
             Dashboard Hub20 · atualizado às {horaAtualizacao}
           </p>
