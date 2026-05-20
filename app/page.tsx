@@ -183,10 +183,10 @@ function Dashboard() {
               <BarChart3 className="w-5 h-5 text-[var(--psa-blue)]" />
             </div>
             <div className="flex items-baseline gap-2 mb-3">
-              <span className="text-5xl font-bold text-[var(--psa-blue)] font-['Plus_Jakarta_Sans']">
+              <span className="text-5xl font-bold text-[var(--psa-text)] font-['Plus_Jakarta_Sans']">
                 {data.resumo.taxaConversao.toFixed(1)}
               </span>
-              <span className="text-2xl font-bold text-[var(--psa-blue)]">%</span>
+              <span className="text-2xl font-bold text-[var(--psa-text)]">%</span>
             </div>
             <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
               <div
@@ -272,7 +272,7 @@ function Dashboard() {
                   {d.stageLabel}
                 </span>
               </td>
-              <td className="px-4 py-3 font-semibold text-[var(--psa-blue)]">
+              <td className="px-4 py-3 font-semibold text-[var(--psa-text)]">
                 {formatBRL(d.valor)}
               </td>
               <td className="px-4 py-3 text-[var(--psa-muted)]">
@@ -369,20 +369,13 @@ function Header({
   });
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-10 backdrop-blur-sm bg-white/90">
+    <header className="bg-black border-b border-black sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--psa-orange)] to-[var(--psa-orange-dark)] flex items-center justify-center text-white font-bold text-lg shadow-md font-['Plus_Jakarta_Sans']">
-            P
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-[var(--psa-blue)] font-['Plus_Jakarta_Sans'] leading-tight">
-              PSA · Dashboard
-            </h1>
-            <p className="text-xs text-[var(--psa-muted)]">
-              Negócios Hub20 · atualizado às {horaAtualizacao}
-            </p>
-          </div>
+        <div>
+          <h1 className="psa-logo text-4xl sm:text-5xl">PSA</h1>
+          <p className="text-xs text-gray-400 mt-1">
+            Dashboard Hub20 · atualizado às {horaAtualizacao}
+          </p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -391,7 +384,7 @@ function Header({
             <select
               value={periodo}
               onChange={(e) => setPeriodo(e.target.value)}
-              className="pl-9 pr-8 py-2 rounded-lg border border-gray-200 bg-white text-sm font-medium text-[var(--psa-blue)] focus:outline-none focus:ring-2 focus:ring-[var(--psa-orange)]/30 focus:border-[var(--psa-orange)] cursor-pointer"
+              className="pl-9 pr-8 py-2 rounded-lg border border-gray-200 bg-white text-sm font-medium text-[var(--psa-text)] focus:outline-none focus:ring-2 focus:ring-[var(--psa-orange)]/30 focus:border-[var(--psa-orange)] cursor-pointer"
             >
               <option value="tudo">Todo o período</option>
               <option value="30d">Últimos 30 dias</option>
@@ -450,7 +443,7 @@ function StatCard({
           {icon}
         </span>
       </div>
-      <div className="text-3xl font-bold text-[var(--psa-blue)] font-['Plus_Jakarta_Sans']">
+      <div className="text-3xl font-bold text-[var(--psa-text)] font-['Plus_Jakarta_Sans']">
         {value}
       </div>
       {sub && (
@@ -488,7 +481,7 @@ function DealsTable({
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in">
       <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="text-base font-bold text-[var(--psa-blue)] font-['Plus_Jakarta_Sans'] flex items-center gap-2">
+        <h2 className="text-base font-bold text-[var(--psa-text)] font-['Plus_Jakarta_Sans'] flex items-center gap-2">
           <span className={accentColors[accent]}>{icon}</span>
           {title}
           <span className="text-sm font-medium text-[var(--psa-muted)]">
@@ -565,7 +558,7 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
     <div className="min-h-screen bg-[var(--psa-cream)] flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 max-w-md text-center">
         <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-        <h2 className="text-lg font-bold text-[var(--psa-blue)] mb-2 font-['Plus_Jakarta_Sans']">
+        <h2 className="text-lg font-bold text-[var(--psa-text)] mb-2 font-['Plus_Jakarta_Sans']">
           Erro ao carregar
         </h2>
         <p className="text-sm text-[var(--psa-muted)] mb-6">{message}</p>

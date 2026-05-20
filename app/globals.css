@@ -12,6 +12,20 @@
   --psa-cream: #FAF7F2;
   --psa-text: #1A1A1A;
   --psa-muted: #6B7280;
+  --white: #FFFFFF;
+}
+
+.psa-logo {
+  font-family: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  font-weight: 900;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  line-height: 1;
+  display: inline-block;
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html, body {
