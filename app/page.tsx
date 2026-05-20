@@ -31,7 +31,7 @@ type Negocio = {
   stageLabel: string;
   dataCriacao: string | null;
   dataFechamento: string | null;
-  palestrante: string | null;
+  palestrantes: string[];
   motivoPerda: string | null;
   status: string;
 };
@@ -288,12 +288,12 @@ function Dashboard() {
           title="Negócios ganhos"
           icon={<Trophy className="w-5 h-5" />}
           deals={data.negocios.ganhos}
-          columns={["Negócio", "Palestrante", "Valor", "Data do ganho"]}
+          columns={["Negócio", "Palestrantes", "Valor", "Data do ganho"]}
           renderRow={(d) => (
             <>
               <td className="px-4 py-3 font-medium">{d.nome}</td>
-              <td className="px-4 py-3 text-[var(--psa-blue)]">
-                {d.palestrante || "—"}
+              <td className="px-4 py-3">
+                <PalestrantesCell palestrantes={d.palestrantes} />
               </td>
               <td className="px-4 py-3 font-semibold text-green-700">
                 {formatBRL(d.valor)}
@@ -312,12 +312,12 @@ function Dashboard() {
           title="Negócios perdidos"
           icon={<XCircle className="w-5 h-5" />}
           deals={data.negocios.perdidos}
-          columns={["Negócio", "Palestrante", "Valor", "Motivo", "Data da perda"]}
+          columns={["Negócio", "Palestrantes", "Valor", "Motivo", "Data da perda"]}
           renderRow={(d) => (
             <>
               <td className="px-4 py-3 font-medium">{d.nome}</td>
-              <td className="px-4 py-3 text-[var(--psa-blue)]">
-                {d.palestrante || "—"}
+              <td className="px-4 py-3">
+                <PalestrantesCell palestrantes={d.palestrantes} />
               </td>
               <td className="px-4 py-3 font-semibold text-[var(--psa-muted)]">
                 {formatBRL(d.valor)}
@@ -538,6 +538,24 @@ function LoadingState() {
         </div>
         <p className="text-[var(--psa-muted)] text-sm">Carregando seus dados...</p>
       </div>
+    </div>
+  );
+}
+
+function PalestrantesCell({ palestrantes }: { palestrantes: string[] }) {
+  if (palestrantes.length === 0) {
+    return <span className="text-[var(--psa-muted)]">—</span>;
+  }
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {palestrantes.map((p, i) => (
+        <span
+          key={`${p}-${i}`}
+          className="inline-block px-2.5 py-1 rounded-full bg-[var(--psa-blue)]/10 text-[var(--psa-blue)] text-xs font-medium"
+        >
+          {p}
+        </span>
+      ))}
     </div>
   );
 }

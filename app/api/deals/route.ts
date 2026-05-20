@@ -11,7 +11,6 @@ type DealProperties = {
   createdate?: string;
   hs_lastmodifieddate?: string;
   origem_do_lead?: string;
-  palestrante_principal_correta?: string;
   closed_lost_reason?: string;
   email_do_consultor?: string;
 };
@@ -58,7 +57,6 @@ async function fetchAllHub20Deals(token: string): Promise<HubspotDeal[]> {
         "createdate",
         "hs_lastmodifieddate",
         "origem_do_lead",
-        "palestrante_principal_correta",
         "closed_lost_reason",
         "email_do_consultor",
       ],
@@ -92,6 +90,79 @@ async function fetchAllHub20Deals(token: string): Promise<HubspotDeal[]> {
   }
 
   return allDeals;
+}
+
+// Pra cada deal, busca os line items associados e retorna o map dealId -> [nomes]
+// O "nome" do line item é o palestrante (modelo PSA: cada line item = 1 palestrante negociado).
+async function fetchPalestrantesPorDeal(
+  token: string,
+  dealIds: string[]
+): Promise<Map<string, string[]>> {
+  const result = new Map<string, string[]>();
+  if (dealIds.length === 0) return result;
+
+  // 1) Associações deal -> line_items em lotes de 100
+  const dealToLineItemIds = new Map<string, string[]>();
+  for (let i = 0; i < dealIds.length; i += 100) {
+    const chunk = dealIds.slice(i, i + 100);
+    const res = await fetch(
+      `${HUBSPOT_API}/crm/v4/associations/deals/line_items/batch/read`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inputs: chunk.map((id) => ({ id })) }),
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) {
+      throw new Error(`HubSpot associations error: ${res.status} - ${await res.text()}`);
+    }
+    const data = await res.json();
+    for (const row of data.results || []) {
+      const fromId = row.from?.id;
+      const toIds = (row.to || []).map((t: any) => t.toObjectId?.toString()).filter(Boolean);
+      if (fromId) dealToLineItemIds.set(fromId, toIds);
+    }
+  }
+
+  // 2) Busca o `name` de todos os line items únicos em lotes de 100
+  const allLineItemIds = Array.from(
+    new Set(Array.from(dealToLineItemIds.values()).flat())
+  );
+  const lineItemNames = new Map<string, string>();
+  for (let i = 0; i < allLineItemIds.length; i += 100) {
+    const chunk = allLineItemIds.slice(i, i + 100);
+    const res = await fetch(`${HUBSPOT_API}/crm/v3/objects/line_items/batch/read`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        properties: ["name"],
+        inputs: chunk.map((id) => ({ id })),
+      }),
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      throw new Error(`HubSpot line items error: ${res.status} - ${await res.text()}`);
+    }
+    const data = await res.json();
+    for (const li of data.results || []) {
+      const name = (li.properties?.name || "").trim();
+      if (name) lineItemNames.set(li.id, name);
+    }
+  }
+
+  // 3) Monta o map final dealId -> [nomes]
+  for (const [dealId, liIds] of dealToLineItemIds.entries()) {
+    const names = liIds.map((id) => lineItemNames.get(id)).filter((n): n is string => !!n);
+    result.set(dealId, names);
+  }
+  return result;
 }
 
 // Busca todos os estágios do pipeline (pra montar o funil com nomes)
@@ -137,6 +208,12 @@ export async function GET(req: NextRequest) {
       fetchPipelineStages(token),
     ]);
 
+    // Palestrantes vêm dos line items associados a cada deal
+    const palestrantesPorDeal = await fetchPalestrantesPorDeal(
+      token,
+      deals.map((d) => d.id)
+    );
+
     // Mapa de stageId -> label
     const stageMap = new Map<string, { label: string; order: number }>();
     for (const s of stages) {
@@ -161,7 +238,7 @@ export async function GET(req: NextRequest) {
         stageOrder: stageInfo?.order ?? 999,
         dataCriacao: d.properties.createdate || null,
         dataFechamento: d.properties.closedate || null,
-        palestrante: d.properties.palestrante_principal_correta || null,
+        palestrantes: palestrantesPorDeal.get(d.id) || [],
         motivoPerda: d.properties.closed_lost_reason || null,
         emailConsultor: d.properties.email_do_consultor || null,
         status: isGanho ? "ganho" : isPerdido ? "perdido" : "negociacao",
